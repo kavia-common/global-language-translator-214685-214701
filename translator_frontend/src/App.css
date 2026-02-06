@@ -1,104 +1,424 @@
-/* CSS Variables for Theme Management */
+/* Retro/CRT theme (single styling system: plain CSS) */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --bg: #070a0f;
+  --surface: #0d1220;
+  --surface-2: #0a0f1a;
+  --text: #e9f7ff;
+  --muted: rgba(233, 247, 255, 0.72);
+
+  --grid: rgba(67, 206, 162, 0.09);
+  --border: rgba(67, 206, 162, 0.22);
+
+  --accent: #43cea2;
+  --accent-2: #185a9d;
+
+  --warn: #fbbf24;
+  --error: #ef4444;
+
+  --shadow: rgba(0, 0, 0, 0.55);
+
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  --font: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+[data-theme="light"] {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f0f4ff;
+  --text: #0a1220;
+  --muted: rgba(10, 18, 32, 0.7);
+
+  --grid: rgba(59, 130, 246, 0.08);
+  --border: rgba(59, 130, 246, 0.18);
+
+  --accent: #3b82f6;
+  --accent-2: #06b6d4;
+
+  --shadow: rgba(20, 35, 60, 0.16);
 }
 
 .App {
-  text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font);
+  color: var(--text);
+  background:
+    radial-gradient(1100px 450px at 15% -10%, rgba(67, 206, 162, 0.26), transparent 60%),
+    radial-gradient(1100px 450px at 85% 0%, rgba(24, 90, 157, 0.26), transparent 55%),
+    linear-gradient(180deg, var(--bg), var(--bg));
 }
 
-.App-logo {
-  height: 40vmin;
+/* Subtle scanlines */
+.App::before {
+  content: "";
+  position: fixed;
+  inset: 0;
   pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.35;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+/* ===== Layout ===== */
+.RetroHeader {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 28px 18px 14px;
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.RetroHeader__brand {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.RetroHeader__badge {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  font-family: var(--mono);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(67, 206, 162, 0.16), rgba(24, 90, 157, 0.12));
+  box-shadow: 0 10px 22px var(--shadow);
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+.RetroHeader__actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
+.RetroTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.RetroSubtitle {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.RetroMain {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 10px 18px 26px;
+}
+
+/* ===== Card ===== */
+.RetroCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent),
+    linear-gradient(180deg, var(--surface), var(--surface-2));
+  box-shadow: 0 18px 40px var(--shadow);
+  overflow: hidden;
+}
+
+.RetroCard__header {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.RetroCard__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-family: var(--mono);
+}
+
+/* ===== Status ===== */
+.RetroStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.RetroStatus__text {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.RetroDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+  background: var(--error);
+}
+
+.RetroDot--ok {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(67, 206, 162, 0.18);
+}
+
+.RetroDot--warn {
+  background: var(--warn);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
+}
+
+.RetroDot--err {
+  background: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+}
+
+/* ===== Form ===== */
+.RetroForm {
+  padding: 14px 16px 18px;
+}
+
+.RetroHelp {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom-width: 2px;
   border-radius: 8px;
-  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.RetroGrid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.RetroGrid--2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.RetroField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.RetroField--center {
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.RetroLabel {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.RetroSelect,
+.RetroTextarea {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
+    rgba(0, 0, 0, 0.12);
+  color: var(--text);
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .RetroSelect,
+[data-theme="light"] .RetroTextarea {
+  background:
+    linear-gradient(180deg, rgba(59, 130, 246, 0.06), transparent),
+    rgba(255, 255, 255, 0.8);
+}
+
+.RetroSelect {
+  padding: 10px 12px;
   font-size: 14px;
-  font-weight: 600;
+}
+
+.RetroTextarea {
+  padding: 12px;
+  font-size: 14px;
+  font-family: var(--mono);
+  line-height: 1.45;
+  resize: vertical;
+  min-height: 160px;
+}
+
+.RetroTextarea--readonly {
+  opacity: 0.95;
+}
+
+.RetroSelect:focus,
+.RetroTextarea:focus {
+  border-color: rgba(67, 206, 162, 0.6);
+  box-shadow: 0 0 0 4px rgba(67, 206, 162, 0.12);
+}
+
+/* ===== Buttons ===== */
+.btn {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--text);
+  transition: transform 120ms ease, opacity 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  box-shadow: 0 10px 20px var(--shadow);
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.theme-toggle:active {
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
   transform: translateY(0);
+  opacity: 0.92;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn-primary {
+  border-color: rgba(67, 206, 162, 0.45);
+  background: linear-gradient(90deg, rgba(67, 206, 162, 0.95), rgba(24, 90, 157, 0.95));
+  color: #071017;
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+[data-theme="light"] .btn-primary {
+  color: #ffffff;
+}
+
+.btn-ghost {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.RetroActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+/* ===== Alerts ===== */
+.RetroAlert {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.RetroAlert--error {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.RetroFooterNote {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.14);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: var(--mono);
+}
+
+/* ===== Footer ===== */
+.RetroFooter {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 14px 18px 22px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 12px;
+  font-family: var(--mono);
+}
+
+.RetroFooter__sep {
+  opacity: 0.8;
+}
+
+.RetroLink {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.22);
+}
+
+.RetroLink:hover {
+  color: var(--text);
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===== Responsiveness ===== */
+@media (max-width: 860px) {
+  .RetroHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .RetroHeader__actions {
+    justify-content: flex-start;
+  }
+
+  .RetroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .RetroField--center {
+    align-items: flex-start;
+  }
+
+  .RetroGrid--2 {
+    grid-template-columns: 1fr;
   }
 }
